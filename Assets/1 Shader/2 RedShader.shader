@@ -32,6 +32,9 @@ Shader "Unlit/2 RedShader"
             v2f vert (appdata v)
             {
                 v2f o;
+                // UnityObjectToClipPos 함수
+                // 오브젝트 공간에서 바로 클립 공간으로 정점의 위치를 변환한다.
+                // 정점 위치가 한 3D 좌표 공간에서 다음에 수행할 계산에 더 적합한 다른 3D 좌표 공간으로 사영됨을 의미
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 return o;
             }
