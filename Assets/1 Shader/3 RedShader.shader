@@ -32,6 +32,7 @@ Shader "Unlit/3 RedShader"
 
             #include "UnityCG.cginc"
 
+
             // 선언한 속성을 사용하기 위해 CGPROGRAM / ENDCG 사이에 _Color 선언을 추가한다.
             // 속성의 이름 _Color와 내부 선언 변수 이름은 같아야 제대로 작동한다.
             fixed4 _Color;
