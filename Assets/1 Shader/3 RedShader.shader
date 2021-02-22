@@ -1,12 +1,22 @@
 // p68 속성 추가
 // 값을 하드코딩하는 것은 좋은 습관이 아니다.
-// 원하는 색상으로 변하도록 만들어보자.
+// 색상값을 원하는대로 바꾸기 위해, 속성에 색상 속성을 정의한다.
+
+// 유니티 셰이더는 두 가지 언어가 섞여있다.
+    // 1. Cg라는 NVIDIA에서 개발한 셰이더 언더
+        // CGPROGRAM과 ENDCG문 사이에 있는 것들이 이 언어로 작성됨
+    // 2. 셰이더랩(ShaderLab) 언어
+        // 유니티에서만 사용하는 Cg를 확장한 언어다.
+        // CGPROGRAM 바깥에 있는 언어가 이 언어로 작성됨
+        // _Color 변수를 선언해야 한다.
+        // 이를 통해 Cg 언어로 작성한 코드가 셰이더랩 쪽에 존재하는 속성을 인지할 수 있다.
+        
 Shader "Unlit/3 RedShader"
 {
-    // 색을 관리하는 변수를 추가할 경우
-    // 다시 속성 블록(Properties) 영역을 추가한다.
+    // 속성 블록 구성 : _이름 ("설명", 타입) = 기본값
     Properties
     {
+        // 색상타입(Color)의 기본값 (1, 0, 0, 1)을 가지는 _Color 변수 선언
         _Color ("Color", Color) = (1, 0, 0, 1)
     }
     SubShader
@@ -22,6 +32,11 @@ Shader "Unlit/3 RedShader"
 
             #include "UnityCG.cginc"
 
+
+            // 선언한 속성을 사용하기 위해 CGPROGRAM / ENDCG 사이에 _Color 선언을 추가한다.
+            // 속성의 이름 _Color와 내부 선언 변수 이름은 같아야 제대로 작동한다.
+            fixed4 _Color;
+
             struct appdata
             {
                 float4 vertex : POSITION;
@@ -35,46 +50,15 @@ Shader "Unlit/3 RedShader"
             v2f vert (appdata v)
             {
                 v2f o;
-                // UnityObjectToClipPos 함수
-                // 오브젝트 공간에서 바로 클립 공간으로 정점의 위치를 변환한다.
-                // 정점 위치가 한 3D 좌표 공간에서 다음에 수행할 계산에 더 적합한 다른 3D 좌표 공간으로 사영됨을 의미
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 return o;
             }
 
-            // 정점함수 다음 프레그먼트함수 전 단계
-            // 클립 공간 정점 위치는 GPU의 레스터라이저 기능부로 전달(정점 셰이더 프레그먼트 셰이더 사이 수행)
-            // 레스터라이저 결과물은 하나의 프레그먼트에 속한 보간된 값들이 될 것이다.(픽셀 위치, 정점 색상 및 기타)
-                // 보간된 데이터 -> v2f 구조체에 들어감
-                // 프레그먼트 셰이더로 전달될 것이다.
-                // 프레그먼트 셰이더는 이걸 이용해 각각의 프레그먼트에 대한 최종 색상값을 계산
-
-            //어떻게 하면 가장 간단하게 셰이더의 출력을 빨간색으로 나오게 할 수 있을까?
-            // 1장에서 배운 렌더링 파이프라인에 대해서 생각해보면
-            // 프레그먼트 함수의 끝에 원하는 색상값을 하드코딩하는 방법이 떠오른다.
             fixed4 frag (v2f i) : SV_Target
             {
-                // 전 : 기존 코드는 최종 반환값이 col을 통해 반환된다.
-                // // sample the texture
-                // fixed4 col = tex2D(_MainTex, i.uv);
-                // // apply fog
-                // UNITY_APPLY_FOG(i.fogCoord, col);
-                // return col;
-
-                // 후 : 빨간색 값만을 반환한다.
-                // fixed4 : 4개의 고정 정밀도 소수를 멤버로 가진 구조체
-                // fixed4 각 멤버의 의미
-                // 1번 멤버 : 빨간색 (0 ~ 1)
-                // 2번 멤버 : 초록색 (0 ~ 1)
-                // 3번 멤버 : 파란색 (0 ~ 1)
-                // 4번 멤버 : 투명도(알파값) (0 ~ 1)
-                // 투명도 값은 Transparent 큐에서 렌더링하지 않는다면 알파값은 보통 무시한다.
-                return fixed4(1, 0, 0, 1);
-
-                // ★ 실수 타입 정밀도
-                // (정밀도 낮음) fixed < half < float (정밀도 높음)
-                // 성능이 중요한 경우 정밀도가 낮은 쪽을 고려한다.
-                // 품질이 중요한 경우 정밀도가 높은 쪽을 고려한다.
+                // 프레그먼트 함수 내의 return문을 바꿔 _Color 변수를 실제로 사용하자
+                // return fixed4(1, 0, 0, 1);
+                return _Color;
             }
             
             ENDCG
