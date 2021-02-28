@@ -28,7 +28,7 @@ Shader "Custom/RasterizerTestShader"
             {
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
-                o.color = v.color;
+                o.color = v.vertex;
                 return o;
             }
 
