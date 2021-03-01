@@ -12,6 +12,10 @@
 
 [TOC]
 
+[Shader-Startup](./#Shader-Startup)
+
+[학습 목표](#학습-목표)
+
 ## 학습 목표
 
 - 유니티 셰이더 개발
