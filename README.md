@@ -12,7 +12,7 @@
 
 [TOC]
 
-[Shader-Startup](./#Shader-Startup)
+[Shader-Startup](#Shader-Startup)
 
 [학습 목표](#학습-목표)
 
