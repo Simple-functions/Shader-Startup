@@ -174,6 +174,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 36.287
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 6a612282072eb534880b9d406a10822b, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 48e4cc1fed8f6c84ead77fd8ad38b33c, type: 2}
     - target: {fileID: 919132149155446097, guid: 6a612282072eb534880b9d406a10822b, type: 3}
       propertyPath: m_Name
       value: duck
