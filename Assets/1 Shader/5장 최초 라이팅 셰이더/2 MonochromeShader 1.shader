@@ -41,32 +41,24 @@ Shader "Custom/DiffuseShader 2"
                 // NORMAL 시맨틱 선언을 추가해 노멀을 사용하겠다고 컴파일러에 알려주고 있음에 주목.
                     // 이 방법 말곤 렌더러에 원하는 바를 이해시킬수 없음.
                 // 이 정점 함수에서 노멀 위치 벡터를 월드 공간에서 계산해야 함.
+                    // 다행이 이와 관련된 UnityObjectToWorldNormal이라는 편리한 함수가 존재함
+                    // appdata를 통해 정점 셰이더로 전달한 노말 벡터 : 기존 객체 공간 -> 월드 공간 변환함
                 float3 normal : NORMAL;
             };
 
-            // 2. v2f에 추가
-            // 정확히 동일한 멤버 변수를 추가해야함
-            // 이런 구조 마음에 안들지도 모르는데
-            // 바꿔서 조지는건 님책임
             struct v2f
             {
                 float4 vertex : SV_POSITION;
                 float4 color : COLOR;
             };
 
-            // 3. 정점 함수에 색상 할당
-            // 구조체에 적당한 멤버 변수 추가후 정점 함수에 한줄 추가
-            // appdata 변수 v
-                // v.color : appdata의 색상 멤버 변수
-            // v2f 변수 o
-                // o.color : v2f 색상 멤버 변수로
-            // o.color = v.color로 할당
-            // 정점 색상 데이터 -> 레스터라이저 통과함 -> 레스터라이저 색상 보간
+
             v2f vert (appdata v)
             {
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
-                o.color = v.color;
+                float3 worldNormal = UnityObjectToWorldNormal(v.normal); // 월드 노멀 벡터 계산
+                o.worldNormal = worldNormal;
                 return o;
             }
 
