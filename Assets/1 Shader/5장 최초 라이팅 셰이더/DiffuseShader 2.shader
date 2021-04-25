@@ -43,7 +43,6 @@ Shader "Custom/DiffuseShader 2"
             // 텍스처를 위한 변수 추가
             sampler2D _DiffuseTex;  // 속성에서 추가한 텍스처
             float4 _DiffuseTex_ST;  // TRANSFORM_TEX 매크로 함수에서 사용하는 변수
-
             float4 _Color;
 
             v2f vert (appdata v)
@@ -52,7 +51,7 @@ Shader "Custom/DiffuseShader 2"
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 // 텍스처 좌표의 크기와 위치를 조절한다.
                 // - 재질 내의 어떤 크기와 위치 관련 변화를 적용할 수 있다.
-                o.uv = TRANSFORM_TEX(u.uv, MainTex);    
+                o.uv = TRANSFORM_TEX(v.uv, _DiffuseTex);    
                 float3 worldNormal = UnityObjectToWorldNormal(v.normal);
                 o.worldNormal = worldNormal;
                 return o;
