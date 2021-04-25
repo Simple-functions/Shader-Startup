@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: DiffuseShader
-  m_Shader: {fileID: 4800000, guid: 7f0f230c35c7c394f99854a1638e10e8, type: 3}
+  m_Name: DiffuseShader 2
+  m_Shader: {fileID: 4800000, guid: d1a7294b86fed724f81664972a26f470, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -18,7 +18,11 @@ Material:
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
-    m_TexEnvs: []
+    m_TexEnvs:
+    - _DiffuseTex:
+        m_Texture: {fileID: 2800000, guid: ac78d86cbc5bb1a429014641d9a39fa8, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Floats: []
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
