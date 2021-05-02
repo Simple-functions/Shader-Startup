@@ -13,7 +13,7 @@ Shader "Custom/SpecularShaderForwardAdd"
     {
         Tags { "LightMode" = "ForwardBase"}
         LOD 100
-        
+
         Pass
         {
             CGPROGRAM

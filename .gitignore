@@ -58,3 +58,7 @@ sysinfo.txt
 # Crashlytics generated file
 crashlytics-build.properties
 
+*.meta
+Assets/ShaderlabVS/VSPlugins/ShaderlabVSPro-1.1.0.vsix
+Assets/ShaderlabVS/Editor/ShaderlabVS.cs
+Assets/ShaderlabVS/Documents/Manual.pdf
