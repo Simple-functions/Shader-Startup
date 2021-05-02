@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: SpecularMaterial
-  m_Shader: {fileID: 4800000, guid: 5873d7a312fc6b6498d5f7291500576a, type: 3}
+  m_Name: SpecularShaderForwardAddMaterial
+  m_Shader: {fileID: 4800000, guid: 3a4145842a8271844879083a22f5c45f, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
