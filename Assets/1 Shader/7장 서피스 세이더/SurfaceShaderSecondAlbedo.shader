@@ -5,8 +5,8 @@ Shader "Custom/SurfaceShaderNormalMap"
     {
         _Color ("Color", Color) = (1,1,1,1)
         _MainTex ("Albedo (RGB)", 2D) = "white" {}
-        _SecondAlbedo ("Second Albedo (RGB)", 2D) = "white" {}
-        _AlbedoLerp ("Albedo Lerp", Range(0, 1)) = 0.5
+        _SecondAlbedo ("Second Albedo (RGB)", 2D) = "white" {}  // 두 번째 텍스처 추가
+        _AlbedoLerp ("Albedo Lerp", Range(0, 1)) = 0.5          // 슬라이더 값 추가
         _Glossiness ("Smoothness", Range(0,1)) = 0.5
         _Metallic ("Metallic", Range(0,1)) = 0.0
     }
@@ -23,33 +23,34 @@ Shader "Custom/SurfaceShaderNormalMap"
         #pragma target 3.0
 
         sampler2D _MainTex;
+        // 속성에 선언한 값을 다시 선언해준다.
+        // - 두번째 텍스처를 위한 다른 UV 집합을 넣어야 되지 않나?
+        // -- 텍스처가 동일한 UV 구조를 가지고 있다면 하나의 UV 집합을 재활용 가능하다.
         sampler2D _SecondAlbedo;
         half _AlbedoLerp;
 
         struct Input
         {
             float2 uv_MainTex;
+            
         };
 
         half _Glossiness;
         half _Metallic;
         fixed4 _Color;
 
-        // 해당 셰이더에 인스턴스 서포트를 추가한다. 이 셰이더를 활용하는 재질에 '인스턴싱 활성화'를 체크해야 한다.
-        // 인스턴싱에 대한 자세한 정보는 https://docs.unityed.com/Manual/GPUInstancing.html이 사이트를 참고한다.
-        // #pragma instancing_options assumeuniformscaling
         UNITY_INSTANCING_BUFFER_START(Props)
-            // 각 인스턴스별 프로퍼티는 여기에 넣는다.
         UNITY_INSTANCING_BUFFER_END(Props)
 
         void surf (Input IN, inout SurfaceOutputStandard o)
         {
-            // Albedo comes from a texture tinted by color
-            // 색상이 스며든 텍스처에서 알베도값을 가져온다.
             fixed4 c = tex2D (_MainTex, IN.uv_MainTex);
+            // 라이팅 함수에 정보를 보내기 앞서 
+            // 기본적으로 셰이더의 입력 데이터(텍스처 및 각종 값들)를 처리한다.
+            // - 따라서 동일한 UV와 함께 두 번째 테스트를 살펴보고
+            // - 둘을 선형 보간한 결과 값을 알베도 출력에 할당해야 한다.
             fixed4 secondAlbedo = tex2D(_SecondAlbedo, IN.uv_MainTex);
             o.Albedo = lerp(c, secondAlbedo, _AlbedoLerp) * _Color;
-            // 금속성(metallic)과 부드러움(smoothness)정도는 슬라이더 변수에서 가져온다.
             o.Metallic = _Metallic;
             o.Smoothness = _Glossiness;
             o.Alpha = c.a;
